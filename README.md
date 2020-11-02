@@ -12,4 +12,5 @@ Program tells you about it.
 Use `print all` for printing the whole list of frames.
 3. `change <frameID> <newData>` - changing frame data
 4. `save` - saving changes and closing editable file
-5. `exit` - returning to command line
+5. `exit` - returning to command line (use `EXIT` to exit without saving)
+6. `help` - printing the commands list
