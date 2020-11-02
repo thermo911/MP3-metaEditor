@@ -24,5 +24,7 @@ uint8_t* getBytesOfuint32_t(uint32_t n);
 
 char* getFrameDataAsString(Frame* frame);
 
+int isFrameIdCorrect(const uint8_t* id);
+
 #endif // !NUM_SERV
 

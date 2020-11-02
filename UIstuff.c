@@ -7,7 +7,7 @@ void printFrames(ID3v2_Tag* tag, const char* frameID)
 		Frame* frame = getFrameByID(tag, frameID);
 		if (frame == NULL || frame->mayBeShown == 0)
 		{
-			printf("  frame #%s# not found or can't be shown\n", frameID);
+			printf("  frame %s not found or can't be shown\n", frameID);
 		}
 		else
 		{

@@ -1,5 +1,6 @@
 #include "service.h"
 #include <stdio.h>
+#include "mem_debugger.h"
 
 void swapBytes(uint32_t* n)
 {
@@ -57,8 +58,6 @@ void setUTF8(Frame* frame)
 		}
 	}
 
-	frame->dataOffset = (unicodeDirSymbPresented == 0 ? frame->dataOffset : frame->dataOffset + 2);
-
 	uint8_t* newData = (uint8_t*)malloc(sizeof(uint8_t) * newDataSize);
 	for (int i = 0; i < frame->dataOffset; i++)
 	{
@@ -70,17 +69,20 @@ void setUTF8(Frame* frame)
 	while (j < newDataSize && i < frame->frameHeader->dataSize)
 	{
 		symbUTF16 = *(uint16_t*)&(frame->data[i]);
-		if (unicodeDirSymbPresented == 1 && unicodeDirSymb == 0xFFFE)
+		if (symbUTF16 != 0xFFFE && symbUTF16 != 0xFEFF)
 		{
-			symbUTF16 >> 8;
-		}
-		newData[j] = symbUTF16;
-		if (newData[j] > 0x7F)
-		{
-			frame->mayBeShown = 0;
+			if (unicodeDirSymbPresented == 1 && unicodeDirSymb == 0xFFFE)
+			{
+				symbUTF16 >>= 8;
+			}
+			newData[j] = symbUTF16;
+			if (newData[j] > 0x7F)
+			{
+				frame->mayBeShown = 0;
+			}
+			j++;
 		}
 		i += 2;
-		j++;
 	}
 
 	if (frame->mayBeShown == 1)
@@ -289,5 +291,23 @@ char* getFrameDataAsString(Frame* frame)
 	}
 	str[strLen] = '\0';
 	return str;
+}
+
+int isFrameIdCorrect(const uint8_t* id)
+{
+	int correct = 1;
+	for (int i = 0; i < 4; i++)
+	{
+		if (id[i] > 'Z')
+		{
+			
+		}
+		if (id[i] < 'A' && !(id[i] >= '0' && id[i] <= '9'))
+		{
+			correct = 0;
+			break;
+		}
+	}
+	return correct;
 }
 

@@ -3,6 +3,7 @@
 #include "service.h"
 #include <stdio.h>
 #include <string.h>
+#include "mem_debugger.h"
 
 ID3header* getID3Header(FILE* file)
 {
@@ -15,11 +16,6 @@ ID3header* getID3Header(FILE* file)
         header->signature[i] = data[i];
     }
     header->signature[3] = '\0';
-
-    if (strcmp(header->signature, "ID3"))
-    {
-        return NULL;
-    }
 
     if (strcmp(header->signature, "ID3"))
     {
@@ -50,15 +46,19 @@ FrameHeader* getFrameHeader(FILE* file, ID3header* header)
     FrameHeader* fh = (FrameHeader*)malloc(sizeof(FrameHeader));
     uint8_t* data = (uint8_t*)malloc(sizeof(uint8_t) * 10);
     fread(data, 1, sizeof(uint8_t) * 10, file);
+    short correct = 1;
 
     for (int i = 0; i < 4; i++)
     {
         fh->frameID[i] = data[i];
     }
     fh->frameID[4] = '\0';
+
+    correct = isFrameIdCorrect(fh->frameID);
     
-    if (fh->frameID[0] == 0)
+    if (!correct)
     {
+        free(data);
         return NULL;
     }
 
@@ -104,6 +104,7 @@ Frame* getFrame(FILE* file, ID3header* header)
     {
         return NULL;
     }
+    //printFrameHeaderInfo(frame->frameHeader);
     frame->data = getFrameData(file, frame->frameHeader);
     frame->encoding = (enum Encoding)frame->data[0];
     frame->mayBeShown = 1;
@@ -141,6 +142,7 @@ ID3v2_Tag* getTag(FILE* file)
         {
             break;
         }
+        //printFrame(frames[i]);
         bytesRead += frames[i]->frameHeader->dataSize + 10;
 
         totalFrames++;

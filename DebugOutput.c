@@ -36,8 +36,9 @@ void printFrame(Frame* frame)
     printf("======================\n");
     printf("%s\n", frame->frameHeader->frameID);
     printf("encoding: %d\n", frame->encoding);
+    printf("data size: %d\n", frame->frameHeader->dataSize);
     printf("offset: %d\n", frame->dataOffset);
-    for (int i = frame->dataOffset; i < frame->frameHeader->dataSize; i++)
+    /*for (int i = frame->dataOffset; i < frame->frameHeader->dataSize; i++)
     {
         printf("%c", frame->data[i]);
     }
@@ -45,7 +46,7 @@ void printFrame(Frame* frame)
     if (frame->mayBeShown != 1)
     {
         printf("DATA WILL NOT BE SHOWN\n");
-    }
+    }*/
     printf("======================\n");
 }
 
