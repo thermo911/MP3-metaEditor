@@ -1,9 +1,8 @@
 #include "ID3v2.h"
-#include "DebugOutput.h"
 #include "service.h"
 #include <stdio.h>
 #include <string.h>
-#include "mem_debugger.h"
+#include <stdlib.h>
 
 ID3header* getID3Header(FILE* file)
 {

@@ -1,4 +1,5 @@
 #include "UIstuff.h"
+#include <stdlib.h>
 
 void printFrames(ID3v2_Tag* tag, const char* frameID)
 {

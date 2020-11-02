@@ -1,6 +1,6 @@
 #include "service.h"
 #include <stdio.h>
-#include "mem_debugger.h"
+#include <stdlib.h>
 
 void swapBytes(uint32_t* n)
 {

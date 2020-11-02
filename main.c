@@ -1,10 +1,9 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "ID3v2.h"
 #include "service.h"
-#include <string.h>
 #include "UIstuff.h"
-#include "mem_debugger.h"
-#include "DebugOutput.h"
 
 int main()
 {
@@ -180,5 +179,4 @@ int main()
 	free(command2);
 	free(command3);
 	free(filename);
-	mem_debugger_dump_info(0, NULL);
 }
