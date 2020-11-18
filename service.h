@@ -12,7 +12,7 @@ uint8_t getDataOffset(Frame* frame);
 
 void updateTagTotalSize(ID3v2_Tag* tag);
 
-Frame* getFrameByID(ID3v2_Tag* tag, uint8_t* frameID);
+Frame* getFrameByID(ID3v2_Tag* tag, const uint8_t* frameID);
 
 void freeMemory(ID3v2_Tag* tag);
 

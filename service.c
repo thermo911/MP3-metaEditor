@@ -104,6 +104,10 @@ uint8_t getDataOffset(Frame* frame)
 		|| !strcmp(frame->frameHeader->frameID, "TXXX"))
 	{
 		dataOffset = (!strcmp(frame->frameHeader->frameID, "TXXX") ? 1 : 4);
+		if (!strcmp(frame->frameHeader->frameID, "TXXX"))
+		{
+			dataOffset += 3;
+		}
 		if (frame->encoding != UTF_16 && frame->encoding != UTF_16BE)
 		{
 			for (int i = dataOffset; frame->data[i] != '\0'; i++)
@@ -118,7 +122,7 @@ uint8_t getDataOffset(Frame* frame)
 			for (int i = dataOffset; ; i += 2)
 			{
 				symbol2bytes = *(uint16_t*)&frame->data[i];
-				if (symbol2bytes != 0)
+				if (symbol2bytes != 0 && symbol2bytes!=0xFFFE && symbol2bytes != 0xFEFF)
 				{
 					dataOffset += 2;
 				}

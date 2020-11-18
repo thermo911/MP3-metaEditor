@@ -105,7 +105,7 @@ Frame* getFrame(FILE* file, ID3header* header)
     }
     //printFrameHeaderInfo(frame->frameHeader);
     frame->data = getFrameData(file, frame->frameHeader);
-    frame->encoding = (enum Encoding)frame->data[0];
+    frame->encoding = (Encoding)frame->data[0];
     frame->mayBeShown = 1;
     frame->dataOffset = getDataOffset(frame);
 
