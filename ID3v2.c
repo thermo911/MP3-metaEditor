@@ -103,7 +103,6 @@ Frame* getFrame(FILE* file, ID3header* header)
     {
         return NULL;
     }
-    //printFrameHeaderInfo(frame->frameHeader);
     frame->data = getFrameData(file, frame->frameHeader);
     frame->encoding = (Encoding)frame->data[0];
     frame->mayBeShown = 1;
@@ -135,17 +134,39 @@ ID3v2_Tag* getTag(FILE* file)
     uint32_t i = 0;
     while (bytesRead < tag->header->size && i < possibleFramesNumber)
     {
-        frames[i] = getFrame(file, tag->header);
-
-        if (frames[i] == NULL)
+        Frame* frame = getFrame(file, tag->header);
+        uint8_t adding = 1;
+        if (frame != NULL)
         {
+            for (int j = 0; j < totalFrames; j++)
+            {
+                if (!strcmp(frame->frameHeader->frameID, frames[j]->frameHeader->frameID))
+                {
+                    if (!strcmp(frame->frameHeader->frameID, "COMM"))
+                    {
+                        break;
+                    }
+                    adding = 0;
+                    free(frame);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            frames[i] = NULL;
             break;
         }
-        //printFrame(frames[i]);
-        bytesRead += frames[i]->frameHeader->dataSize + 10;
 
-        totalFrames++;
-        i++;
+        if (adding)
+        {
+            frames[i] = frame;
+
+            bytesRead += frames[i]->frameHeader->dataSize + 10;
+
+            totalFrames++;
+            i++;
+        }
     }
 
     tag->frames = (Frame**)malloc(totalFrames * sizeof(Frame*));
