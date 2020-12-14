@@ -304,7 +304,8 @@ int isFrameIdCorrect(const uint8_t* id)
 	{
 		if (id[i] > 'Z')
 		{
-			
+			correct = 0;
+			break;
 		}
 		if (id[i] < 'A' && !(id[i] >= '0' && id[i] <= '9'))
 		{
